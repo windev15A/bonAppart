@@ -14,3 +14,5 @@ foreach ($_POST as $key => $value) {
 foreach ($_GET as $key => $value) {
     $_GET[$key] = htmlentities($value);
 }
+
+require_once('function.php');
