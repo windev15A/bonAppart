@@ -20,12 +20,9 @@
     </div>
     <?php if (isset($message)) echo $message; ?>
 
-
-    
-
-    <div class="row my-5 position-relative">
+    <div class="d-flex flex-wrap justify-content-around my-5 position-relative">
         <?php foreach ($datas as $key => $produit) : ?>
-            <div class="card col-md-4 col-sm-12 my-2 <?php echo empty($produit['reservation_message']) ? '' : 'bg-secondary' ?>">
+            <div class="card col-md-4 col-lg-3 col-sm-12 my-2 <?php echo empty($produit['reservation_message']) ? '' : 'bg-secondary' ?>">
                 <img class="card-img-top" src="../img/home.jpg" alt="<?= $produit['title'] ?>">
                 <div class="card-body">
                     <h5 class="card-title"><?= strtoupper($produit['title']) ?></h5>
@@ -34,9 +31,9 @@
                     <a href="consulter.php?id=<?= $produit['id'] ?>" class="btn btn-dark">Consulter</a>
                 </div>
                 <?php if(!empty($produit['reservation_message'])):  ?>
-                <div class="position-absolute top-0 end-0">
-                    <h4 class="btn btn-danger">Reservé</h4>
-                </div>
+                
+                    <h4 class="btn btn-danger btn_rotate">Reservé</h4>
+                
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>

@@ -1,0 +1,11 @@
+.btn_rotate{
+    position: absolute;
+    top:12px;
+    right: -15px;
+    transform: rotate(45deg);
+    z-index: 99;
+}
+.card{
+    margin-left: 5px;
+    margin-right: 5px;
+}

@@ -1,5 +1,4 @@
 
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="index.php">LE BON APPART</a>
@@ -31,16 +30,27 @@
                 <li class="nav-item">
                     <a class="nav-link" href="connexion.php">Connexion</a>
                 </li>
-                <?php endif; ?>
-                <?php if(isConnected()): ?>
+            <?php else: ?>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-success" href="connexion.php?action=deconnexion">Déconnecter</a>
-                </li>
+                    <a class="nav-link " href="connexion.php">Bonjour 
+                        <?php 
+                            if(isset($_SESSION['user'])){
+                                echo $_SESSION['user']['name'];
+                            }
+                        ?>
+                    
+                    </a>
+                </li> 
+            <?php endif; ?>
+                <?php if(isConnected()): ?>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-success" href="connexion.php?action=deconnexion">Déconnecter</a>
+                    </li>
                 <?php endif; ?>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container mx-auto">
+<div class="container">
     <main>
