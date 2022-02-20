@@ -16,3 +16,4 @@ foreach ($_GET as $key => $value) {
 }
 
 require_once('function.php');
+require_once('validate.php');

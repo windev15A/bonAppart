@@ -2,9 +2,9 @@
 
 require_once('./inc/init.php');
 
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
+// echo '<pre>';
+// print_r($_POST);
+// echo '</pre>';
 
 if (isConnected()) {
     header('location: index.php');
@@ -12,24 +12,37 @@ if (isConnected()) {
 
 
 if(isset($_POST['password'],$_POST['confirm_password'])){
-
  if($_POST['password'] != $_POST['confirm_password']){
     $errpassword = '<p class="text-danger"> Mot de passe incorrect</p>';
     $error = true;
  }else {
-     $passord = password_hash($_POST['password']);
+     $passord = password_hash($_POST['password'], PASSWORD_DEFAULT);
  }
 }
 
+if(isset($_POST['email']))
+{
+    if(!validateInput('email', $_POST['email']))
+    {
+        $errEmail = '<p class="text-danger">L\'adresse email est considérée comme invalide.</p>';
+        $error = true;
+    }
+}
 
-if (isset($_POST['name'], $_POST['prenom'],$_POST['email'],$_POST['password'])) {
-    $reqInsert = $bdd->prepare("INSERT INTO user (pseudo, email,password,name,prenom) VALUES (:pseudo, )");
+if (isset($_POST['name'], $_POST['prenom'],$_POST['email'],$_POST['password']) && !$error) {
+    $reqInsert = $bdd->prepare("INSERT INTO user (pseudo, email,password,name,prenom) VALUES (:pseudo, :email,:password,:name,:prenom )");
     $reqInsert->bindValue(':pseudo', $_POST['pseudo'], PDO::PARAM_STR);
-    $reqInsert->bindValue(':email', $_POST['pseudo'], PDO::PARAM_STR);
+    $reqInsert->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+    $reqInsert->bindValue(':password', $_POST['password'], PDO::PARAM_STR);
+    $reqInsert->bindValue(':name', $_POST['name'], PDO::PARAM_STR);
+    $reqInsert->bindValue(':prenom', $_POST['prenom'], PDO::PARAM_STR);
+
 
     $reqInsert->execute();
 
     if ($reqInsert->rowCount()) {
+        $_SESSION['msggNewUser'] = '<p class="alert alert-success p-2 text-center">Bienvenu dans notre site <br> Connectez-vous</p>';
+        header('location: connexion.php');
         
     } else {
         $erreur = '<p class="alert alert-danger p-2 text-center">L\'identifiant ou le mot de passe est incorrect.</p>';
@@ -37,11 +50,11 @@ if (isset($_POST['name'], $_POST['prenom'],$_POST['email'],$_POST['password'])) 
 }
 
 
-if (isset($_GET['action']) && $_GET['action'] == 'deconnexion') {
+// if (isset($_GET['action']) && $_GET['action'] == 'deconnexion') {
 
-    unset($_SESSION['user']);
-    header('location: connexion.php');
-}
+//     unset($_SESSION['user']);
+//     header('location: connexion.php');
+// }
 
 
 require_once('./inc/header.inc.php');
@@ -72,8 +85,8 @@ require_once('./inc/nav.inc.php');
     </div>
     <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <input type="text" name="email" class="form-control" id="email" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text"><?php if(isset($errEmail)) echo $errEmail ?></div>
     </div>
     <div class="mb-3">
         <label for="password" class="form-label">Mot de passe</label>
